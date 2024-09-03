@@ -7,7 +7,7 @@ module "monitoring_bucket_logs" {
   source  = "terraform-aws-modules/s3-bucket/aws"
   version = "4.1.2"
 
-  bucket                   = "${var.name}_${random_string.key.result}"
+  bucket = "App102309234Logs"
   force_destroy            = true
   object_lock_enabled      = true
   control_object_ownership = true

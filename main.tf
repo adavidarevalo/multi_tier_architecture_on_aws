@@ -1,5 +1,5 @@
 terraform {
-  required_version = ">= 1.9.2, < 2.0.0"
+  required_version = ">= 1.9.0, < 2.0.0"
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -99,6 +99,15 @@ module "db" {
 
   db_subnet_group_name = module.vpc.database_subnet_group
 
+  database_route_table_ids = module.vpc.database_route_table_ids
+
+  vgw_id = module.vpc.vgw_id
+
+  acm_certificate_arn = module.acm.acm_certificate_arn
+
+  database_subnets = module.vpc.database_subnets
+
+  database_subnets_cidr_blocks = module.vpc.database_subnets_cidr_blocks
 }
 
 module "backEnd" {

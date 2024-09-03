@@ -18,3 +18,19 @@ output "vpc_cidr_block" {
 output "database_subnet_group" {
   value = module.vpc.database_subnet_group
 }
+
+output "database_route_table_ids" {
+  value = module.vpc.database_route_table_ids
+}
+
+output "vgw_id" {
+  value = module.vpc.vgw_id
+}
+
+output "database_subnets" {
+  value = module.vpc.database_subnets
+}
+
+output "database_subnets_cidr_blocks" {
+  value = module.vpc.database_subnets_cidr_blocks
+}

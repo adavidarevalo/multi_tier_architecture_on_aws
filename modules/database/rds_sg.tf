@@ -13,8 +13,9 @@ module "rdsDb_sg" {
       protocol    = "tcp"
       description = "MySQL access from within VPC"
       cidr_blocks = var.vpc_cidr_block
-    },
+    }
   ]
+
 
   egress_rules = ["all-all"]
 

@@ -49,3 +49,23 @@ variable "db_password" {
 variable "db_subnet_group_name" {
   type = string
 }
+
+variable "database_route_table_ids" {
+  type = list(string)
+}
+
+variable "vgw_id" {
+  type = string
+}
+
+variable "acm_certificate_arn" {
+  type = string
+}
+
+variable "database_subnets" {
+  type = list(string)
+}
+
+variable "database_subnets_cidr_blocks" {
+  type = list(string)
+}
