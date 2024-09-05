@@ -30,7 +30,9 @@ module "frontEndASG" {
 
   image_id          = var.ami_id
   instance_type     = var.ec2_intance_type
-  user_data         = filebase64("${path.module}/user_data/frontEnd.sh")
+  user_data         =  base64encode(templatefile("${path.module}/template-function/frontEnd.tpl", {
+    api_url = var.api_url
+  }))
   ebs_optimized     = false
   enable_monitoring = true
   security_groups   = [module.private_frontend_sg.security_group_id]

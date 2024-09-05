@@ -52,3 +52,7 @@ variable "private_subnets" {
 variable "monitoring_bucket_id" {
   type = string
 }
+
+variable "api_url" {
+  type = string
+}

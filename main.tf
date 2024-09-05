@@ -49,32 +49,6 @@ module "monitoring_bucket_logs" {
   tags = local.tags
 }
 
-module "frontEnd" {
-  source     = "./modules/frontEnd"
-  depends_on = [module.vpc, module.monitoring_bucket_logs]
-
-  domain_name = trimsuffix(data.aws_route53_zone.myDomain.name, ".")
-
-  ami_id = data.aws_ami.ec2_ubuntu_ami.id
-
-  ec2_intance_type = var.frontEnd_instance_type
-
-  key_pair_name = var.frontEnd_key_pair_name
-
-  vpc_id = module.vpc.vpc_id
-
-  name            = "${local.name}-frontEnd"
-  private_subnets = module.vpc.vpc_private_subnet_ids
-
-  vpc_public_subnets  = module.vpc.vpc_public_subnet_ids
-  acm_certificate_arn = module.acm.acm_certificate_arn
-  vpc_cidr_block      = module.vpc.vpc_cidr_block
-
-  route53_zone_id      = local.route53_zoneId
-  monitoring_bucket_id = module.monitoring_bucket_logs.s3_bucket_id
-  tags                 = local.tags
-}
-
 module "db" {
   source     = "./modules/database"
   depends_on = [module.vpc]
@@ -133,4 +107,32 @@ module "backEnd" {
   private_subnets      = module.vpc.vpc_private_subnet_ids
   acm_certificate_arn  = module.acm.acm_certificate_arn
   monitoring_bucket_id = module.monitoring_bucket_logs.s3_bucket_id
+}
+
+module "frontEnd" {
+  source     = "./modules/frontEnd"
+  depends_on = [module.vpc, module.monitoring_bucket_logs, module.backEnd]
+
+  domain_name = trimsuffix(data.aws_route53_zone.myDomain.name, ".")
+
+  ami_id = data.aws_ami.ec2_ubuntu_ami.id
+
+  ec2_intance_type = var.frontEnd_instance_type
+
+  key_pair_name = var.frontEnd_key_pair_name
+
+  vpc_id = module.vpc.vpc_id
+
+  name            = "${local.name}-frontEnd"
+  private_subnets = module.vpc.vpc_private_subnet_ids
+
+  vpc_public_subnets  = module.vpc.vpc_public_subnet_ids
+  acm_certificate_arn = module.acm.acm_certificate_arn
+  vpc_cidr_block      = module.vpc.vpc_cidr_block
+
+  route53_zone_id      = local.route53_zoneId
+  monitoring_bucket_id = module.monitoring_bucket_logs.s3_bucket_id
+  tags                 = local.tags
+
+  api_url = module.backEnd.lb_endpoint
 }

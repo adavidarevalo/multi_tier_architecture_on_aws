@@ -31,7 +31,7 @@ module "backEndASG" {
   image_id      = var.ami_id
   instance_type = var.ec2_intance_type
   user_data = base64encode(templatefile("${path.module}/template-function/backEnd.tpl", {
-    rds_db_endpoint = var.db_instance_domain
+    rds_db_endpoint = "${var.db_instance_domain}"
     rds_password    = "${var.db_password}"
     rds_username    = "${var.db_instance_username}"
     rds_db_name     = "${var.db_instance_name}"

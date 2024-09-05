@@ -13,7 +13,7 @@ module "rdsDb" {
   allocated_storage     = var.db_allocated_storage
   max_allocated_storage = var.db_max_allocated_storage
 
-  deletion_protection = true
+  deletion_protection = false
 
   db_name                     = var.db_name
   username                    = var.db_username

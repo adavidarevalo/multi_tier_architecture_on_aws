@@ -2,7 +2,7 @@ module "nlb" {
   source  = "terraform-aws-modules/alb/aws"
   version = "9.10.0"
 
-  name               = "backendAlb"
+  name               = "backendNlb"
   vpc_id             = var.vpc_id
   subnets            = var.private_subnets
   load_balancer_type = "network"
@@ -23,17 +23,16 @@ module "nlb" {
   }
 
   listeners = {
-    my-tcp = {
+    my-tcp-80 = {
       port     = 80
       protocol = "TCP"
       forward = {
         target_group_key = "backend"
       }
     }
-    my-tls = {
-      port            = 443
-      protocol        = "TLS"
-      certificate_arn = var.acm_certificate_arn
+    my-tcp-443 = {
+      port     = 443
+      protocol = "TCP"
       forward = {
         target_group_key = "backend"
       }
@@ -52,7 +51,7 @@ module "nlb" {
       health_check = {
         enabled             = true
         interval            = 30
-        path                = "/"
+        path                = "/api/status"
         port                = "traffic-port"
         healthy_threshold   = 3
         unhealthy_threshold = 3
